@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT & CyberSec Hub | Professional</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">CYBER<span>HUB</span></div>
+        <div class="tagline">SECURE & PROFESSIONAL</div>
+    </nav>
+
+    <header>
+        <h2>Pusat Kebutuhan <span class="accent-text">IT & Security</span></h2>
+        <p>Tingkatkan skill hacking lo dengan kelas eksklusif dan lengkapi kebutuhan mu dengan barang berkualitas.</p>
+    </header>
+
+    <main id="product-list">
+        </main>
+        
+            <footer class="footer">
+        <p>© 2026 CyberHub. Developed by <span>Zero</span></p>
+        <p style="font-size: 15px; color: #71717a; margin-top: 5px;">All Rights Reserved.</p>
+    </footer>
+
+    <div id="payment-modal" class="overlay">
+        <div class="modal-box">
+            <h3 id="product-title">Selesaikan Pembayaran</h3>
+            <div class="qris-frame">
+                <img src="dana.jpg" alt="QRIS">
+            </div>
+            <p class="modal-desc">Scan QRIS di atas dan konfirmasi.</p>
+            <button class="btn-confirm" onclick="confirmPayment()">Saya Sudah Bayar</button>
+            <button class="btn-cancel" onclick="closeModal()">Batal</button>
+        </div>
+    </div>
+
+    <div id="success-screen" class="overlay">
+        <div class="success-icon">✓</div>
+        <h2>Berhasil!</h2>
+        <p class="success-desc">Admin akan memproses pesanan lo via WhatsApp.</p>
+        <button onclick="goHome()" class="btn-home">Kembali</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

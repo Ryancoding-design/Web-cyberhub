@@ -1,38 +1,57 @@
-// 1. DATABASE PRODUK (Update Terbaru)
+// 1. DATABASE PRODUK (Update Full List + Status)
 const products = [
-    // --- Kategori VPS/Panel ---
-    { name: "VPS Ram 4Gb | 2 Core", price: "Rp 30.000", desc: "High Performance Server." },
-    { name: "VPS Ram 8Gb | 4 Core", price: "Rp 35.000", desc: "Extra Power for multitasking." },
-    { name: "VPS Ram 16Gb | 4 Core", price: "Rp 40.000", desc: "Pro Level Server Specs." },
-    { name: "VPS Ram 16Gb | 8 Core", price: "Rp 65.000", desc: "Beast Mode Server." },
-    { name: "Panel Unlimited", price: "Rp 12.000", desc: "Akses panel tanpa batas." },
-    { name: "Admin Panel", price: "Rp 14.000", desc: "Full control admin akses." },
-    { name: "Reseller Panel", price: "Rp 14.000", desc: "Bisa jual kembali (Best Seller)." },
+    // --- VPS DEDICATED BUDGET ---
+    { name: "VPS Paket 512MB", price: "33.000", status: "Habis", desc: "1 CPU, 512MB RAM, 20GB SSD, 10Gbps Lokal." },
+    { name: "VPS Paket 1GB", price: "60.000", status: "Tersedia", desc: "1 CPU, 1024MB RAM, 25GB SSD, 10Gbps Lokal." },
+    { name: "VPS Paket 4GB", price: "165.000", status: "Tersedia", desc: "2 CPU, 4GB RAM, 40GB SSD, Kencang & Stabil." },
+    { name: "VPS Paket 8GB", price: "420.000", status: "Tersedia", desc: "3 CPU, 8GB RAM, 60GB SSD, Rata Kanan!" },
     
-    // --- Kategori Kelas ---
-    { name: "Kelas Hacking: Basic", price: "Rp 200.000", desc: "Fondasi dasar Hacking." },
-    { name: "Kelas Hacking: Lanjut/Penetrasi", price: "Rp 800.000", desc: "Advanced penetration testing." }
+    // --- PANEL PTERODACTYL ---
+    { name: "Panel: CUPU", price: "5.000", status: "Tersedia", desc: "RAM 2GB, CPU 100%, Disk 2GB. Cocok buat bot." },
+    { name: "Panel: BIASA", price: "10.000", status: "Tersedia", desc: "RAM 3GB, CPU 130%, Disk 2GB." },
+    { name: "Panel: ORANG PENTING", price: "16.000", status: "Tersedia", desc: "RAM 4GB, CPU 150%, Disk 3GB." },
+    { name: "Panel: ORANG KAYA", price: "18.000", status: "Tersedia", desc: "RAM 6GB, CPU 180%, Disk 5GB." },
+    { name: "Panel: SULTAN", price: "20.000", status: "Tersedia", desc: "RAM 8GB, CPU 200%, Disk 6GB." },
+    
+    // --- AKSES ADMIN & RESELLER ---
+    { name: "ADMIN AKSES PANEL", price: "35.000", status: "Tersedia", desc: "Limit 10 User, Bisa create server sendiri, Aman & Private." },
+    
+    // --- KATEGORI KELAS ---
+    { name: "Kelas Hacking: Basic", price: "200.000", status: "Tersedia", desc: "Fondasi dasar Hacking & Cyber Sec." },
+    { name: "Kelas Hacking: Lanjut", price: "800.000", status: "Tersedia", desc: "Advanced Penetration Testing." }
 ];
 
-// 2. FUNGSI RENDER (Tetap Sama)
+// 2. FUNGSI RENDER (Dengan Logika Stok)
 const container = document.getElementById('product-list');
+
 function renderProducts() {
-    container.innerHTML = ""; // Bersihkan list lama
+    container.innerHTML = ""; 
     products.forEach(p => {
+        // Logika warna label status
+        const isHabis = p.status.toLowerCase() === "habis";
+        const statusColor = isHabis ? "#ef4444" : "#10b981"; // Merah jika habis, Hijau jika tersedia
+        const btnDisabled = isHabis ? "disabled style='opacity: 0.5; cursor: not-allowed;'" : "";
+        const btnText = isHabis ? "STOK HABIS" : "BELI";
+
         container.innerHTML += `
             <div class="product-card">
-                <h3>${p.name}</h3>
-                <p style="color: #a1a1aa; font-size: 0.8rem;">${p.desc}</p>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h3>${p.name}</h3>
+                    <span style="font-size: 10px; padding: 2px 8px; border-radius: 20px; background: ${statusColor}22; color: ${statusColor}; border: 1px solid ${statusColor}; font-weight: bold;">
+                        ${p.status.toUpperCase()}
+                    </span>
+                </div>
+                <p style="color: #a1a1aa; font-size: 0.8rem; margin: 10px 0;">${p.desc}</p>
                 <div class="flex-between">
-                    <span class="price">${p.price}</span>
-                    <button onclick="openModal('${p.name}')">BELI</button>
+                    <span class="price">Rp ${p.price}</span>
+                    <button onclick="openModal('${p.name}')" ${btnDisabled}>${btnText}</button>
                 </div>
             </div>
         `;
     });
 }
 
-// 3. LOGIKA INTERAKSI (Tetap Sama)
+// 3. LOGIKA MODAL & WA (Tetap Sama)
 function openModal(name) {
     document.getElementById('product-title').innerText = name;
     document.getElementById('payment-modal').classList.add('show');
@@ -43,21 +62,15 @@ function closeModal() {
 }
 
 function confirmPayment() {
-    // 1. Sembunyikan modal bayar dan tampilkan layar sukses
     document.getElementById('payment-modal').classList.remove('show');
     document.getElementById('success-screen').classList.add('show');
     
-    // 2. Ambil nama produk yang tadi dipilih (untuk isi pesan WA)
     const namaProduk = document.getElementById('product-title').innerText;
+    const nomorWA = "6285129698407"; 
+    const pesan = `Halo Admin CyberHub,%0Asaya ingin membeli produk: *${namaProduk}*%0A%0ASaya sudah melakukan scan QRIS. Mohon segera diproses!`;
 
-    // 3. SETTING WHATSAPP KAMU
-    const nomorWA = "6285129698407"; // GANTI dengan nomor WA kamu (wajib pakai 62, bukan 0)
-    const pesan = `Halo Admin CyberHub, saya sudah melakukan pembayaran untuk: %0A*${namaProduk}*%0A%0AMohon segera diproses ya! Berikut bukti transfernya:`;
-
-    // 4. Buka WhatsApp otomatis setelah jeda 2 detik
-    // Jeda ini supaya user sempat melihat layar "Berhasil" dulu
     setTimeout(() => {
-        window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${pesan}`, '_blank');
     }, 2000);
 }
 
